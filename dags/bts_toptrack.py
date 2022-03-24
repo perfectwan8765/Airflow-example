@@ -4,6 +4,7 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.providers.amazon.aws.operators.redshift import RedshiftSQLOperator
 from airflow.operators.s3_to_redshift_operator import S3ToRedshiftTransfer
+from airflow.operators.bash import BashOperator
 from airflow.models import Variable
 from airflow.models.baseoperator import chain
 from airflow.hooks.S3_hook import S3Hook
@@ -223,11 +224,17 @@ with DAG('bts_toptrack', schedule_interval='@daily',
         copy_options = ['FORMAT AS CSV']
     )
 
+    cleaning_csv = BashOperator(
+        task_id = 'cleaning_csv',
+        bash_command = 'rm -f /tmp/BTS*.csv'
+    )
+
     chain(
         [creating_table, authenticating_spotify],
         get_bts_toptracks,
         making_spotify_csv,
         making_tweet_csv,
         uploading_csv_s3,
-        [copying_toptrack_s3_to_redshift, copying_tweet_s3_to_redshift]
+        [copying_toptrack_s3_to_redshift, copying_tweet_s3_to_redshift],
+        cleaning_csv
     )    
