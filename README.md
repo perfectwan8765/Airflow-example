@@ -68,6 +68,9 @@ airflow scheduler -D
 ### 1. BTS는 정말 미국에서 인기가 많을까?
 > Spotify에서 BTS TopTrack Data와 해당 Track을 해시태그한 최신 Twitter Data를 AWS Redshift에 적재하는 Pipeline를 Apach Airflow로 구성
    
+![BTS_TopTrack_DAG](/images/bts_toptrack_dag.png)
+![BTS_TopTrack_Diagram](/images/bts_toptrack_diagram.png)
+
 * 구성   
   * Spotify와 Twitter API 활용
   * 미국 내 BTS TopTrack Data, TopTrack 해시태그 Tweet Data 활용
