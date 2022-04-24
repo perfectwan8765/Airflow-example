@@ -10,17 +10,7 @@ from datetime import datetime
 import pandas as pd
 from TwitterAPI import TwitterAPI
 
-twitter_owners = {
-    'BTS' : 'bts_twt', 
-    'BLACKPINK' : 'ygofficialblink', 
-    'JUSTINBIEBER' : 'justinbieber',
-    'KATYPERRY' : 'katyperry',
-    'RIHANNA' : 'rihanna',
-    'TAYLORSWIFT' : 'taylorswift13',
-    'LADYGAGA' : 'ladygaga',
-    'BRUNOMARS' : 'BrunoMars', 
-    'SELENAGOMEZ' : 'selenagomez'
-}
+twitter_owners = Variable.get('celebrity_info', deserialize_json=True)
 
 def get_twitter_api () :
     tweet_apikey = Variable.get('tweet_apikey', deserialize_json=True)
@@ -111,7 +101,7 @@ def insert_celebrity_twitter() :
     insert_table_dict('celerbrity', celebritys)
 
 
-with DAG('bts_tweet', schedule_interval='@daily', 
+with DAG('bts_tweet', schedule_interval='@weekly', 
         default_args={
             'start_date' : datetime(2022, 1, 1)
         }, 
